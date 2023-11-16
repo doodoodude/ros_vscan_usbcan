@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
 
 // buffers' sizes
-    int read_buff_size = 10,
+    const int read_buff_size = 10,
         write_buff_size = 2;
 
 // define read buffer
@@ -124,15 +124,15 @@ int main(int argc, char **argv)
     // test_write_buffer.push_back(test_frame);
 
 // inserting created CAN-frame to write buffer
-    test_write_buffer[0] = test_frame
-    test_write_buffer[1] = test_frame_two
+    test_write_buffer[0] = test_frame;
+    test_write_buffer[1] = test_frame_two;
 
 
 
 
 
 // pre-allocating memory for some numbers
-    unsigned int32_t some_read_id = 0x01;
+    unsigned int some_read_id = 0x01;
 
     unsigned char got_some_uint8_number = 0;
     int16_t got_some_int16_number = 0;
@@ -164,7 +164,7 @@ int main(int argc, char **argv)
                         // ROS_INFO("Got CAN-frame with ID: %03x, Data: %02x %02x %02x %02x %02x %02x %02x %02x", read_msg.Id, read_msg.Data[0], read_msg.Data[1], read_msg.Data[2], read_msg.Data[3], read_msg.Data[4], read_msg.Data[5], read_msg.Data[6], read_msg.Data[7]);
                         if(read_msg.Id==some_read_id)
                         {
-                            got_some_int8_number = read_msg[0];
+                            got_some_uint8_number = read_msg.Data[0];
                             got_some_int16_number = usbcan_handle.getDatafromMsg(read_msg,1);
                             got_some_float_number = usbcan_handle.getFloatDatafromMsg(read_msg,3);
 
@@ -175,13 +175,13 @@ int main(int argc, char **argv)
             }
 
         // write request
-            usbcan_handle.writeRequest(test_write_buffer.data(),test_write_buffer.size()) // sending buffer of messages
-            usbcan_handle.writeRequest(&test_frame,1) // sending one frame
-            usbcan_handle.Flush() // sending to CAN all frames, which are not sent yet, immediately
-            usbcan_handle.writeRequest(&test_frame_two,1) // sending another CAN-frame
-            usbcan_handle.Flush() 
+            usbcan_handle.writeRequest(test_write_buffer.data(),test_write_buffer.size()); // sending buffer of messages
+            usbcan_handle.writeRequest(&test_frame,1); // sending one frame
+            usbcan_handle.Flush(); // sending to CAN all frames, which are not sent yet, immediately
+            usbcan_handle.writeRequest(&test_frame_two,1); // sending another CAN-frame
+            usbcan_handle.Flush();
 
-            usbcan_handle_.getErrorFlag(); // check for errors on CAN-bus and print errors in terminal
+            usbcan_handle.getErrorFlag(); // check for errors on CAN-bus and print errors in terminal
 
             rate.sleep(); // some delay between cycles
 
@@ -197,7 +197,7 @@ int main(int argc, char **argv)
     }
 
 
-    usbcan_handle_.close(); // closing CAN-channel 
+    usbcan_handle.close(); // closing CAN-channel 
 
     return 0;
 }
