@@ -7,13 +7,19 @@
 namespace vscan_api
 {
 
+//! Class for holding all functions, structures and variables for establishing connection with USB-CAN adapter and working with CAN-channel. 
+/*!Example of usage.
+
+
+
+*/
 class usbcan_handle
 {
 
 public:
 
-    usbcan_handle(); // constructor 
-    ~usbcan_handle(); // destructor
+    usbcan_handle(); 
+    ~usbcan_handle(); 
 
     // open port of chosen device with set baudrate
     bool open(CHAR * device, DWORD mode, void * speed); 
@@ -62,15 +68,15 @@ private:
     // DWORD write_buffer_size_;
     // DWORD read_buffer_size_;
 
-    VSCAN_HANDLE vscan_handle_=-1; //addres of serial port, or actual status code
-    VSCAN_STATUS vscan_status_=-1; //actual status code, use getStatusString() to print it in human-readable form
+    VSCAN_HANDLE vscan_handle_=-1; //!< Addres of serial port, or actual status code.
+    VSCAN_STATUS vscan_status_=-1; //!< Actual status code, use getStatusString() to print it in human-readable form.
 
-    DWORD vscan_flags_ = 0;
+    DWORD vscan_flags_ = 0; //!< Flags for coding errors and warnings given by USB-CAN adapter.
 
-    CHAR error_string_[33]; //???????????????????????????????????????????????????????? 
+    CHAR error_string_[33]; //!< Error string with fixed size.
 
-    DWORD actual_read_frame_number_ = 0; //actual number of read CAN-fames
-    DWORD actual_write_frame_number_ = 0; //actual number of written CAN-fames
+    DWORD actual_read_frame_number_ = 0; //!< Actual number of read CAN-fames.
+    DWORD actual_write_frame_number_ = 0; //!< Actual number of written CAN-fames.
 
 }; //class
 
