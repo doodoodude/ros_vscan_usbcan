@@ -2,7 +2,6 @@
 #include <vector>
 #include <ros/ros.h>
 #include <vscan_usbcan_api/vs_can_api.h>
-#include <vscan_usbcan_api/can_ids.h>
 
 namespace vscan_api
 {
@@ -21,13 +20,11 @@ public:
     usbcan_handle(); 
     ~usbcan_handle(); 
 
-    // open port of chosen device with set baudrate
     bool open(CHAR * device, DWORD mode, void * speed); 
 
-    void close(); // closing port 
+    void close();
 
-    // setting CAN baudrate
-    bool setSpeed(void * speed); // set speed
+    bool setSpeed(void * speed); 
 
     bool getErrorFlag();
 
@@ -37,20 +34,15 @@ public:
     bool writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size);
     bool Flush();
 
-    // get the actual number of CAN-messages write to CAN after last write request
     unsigned long getActualWriteNum();
 
-    // get the actual number of CAN-messages got from buffer after last read request
     unsigned long getActualReadNum();
 
-    // check if there's no error got from VSCAN USB-CAN driver
     bool noError();
 
-    // insert given 'int16_t' number in Data field of given VSCAN_MSG structure with given byte offset 
     void wrapMsgData(VSCAN_MSG &msg, int16_t val, size_t byte_offset = 0);
     void wrapMsgData(VSCAN_MSG &msg, float val, size_t byte_offset = 0);
 
-    // get 'int16_t' number from Data field of given VSCAN_MSG structure
     int16_t getDatafromMsg(VSCAN_MSG &msg, size_t byte_offset = 0);
     float getFloatDatafromMsg(VSCAN_MSG &msg, size_t byte_offset = 0);
 
@@ -68,15 +60,15 @@ private:
     // DWORD write_buffer_size_;
     // DWORD read_buffer_size_;
 
-    VSCAN_HANDLE vscan_handle_=-1; //!< Addres of serial port, or actual status code.
-    VSCAN_STATUS vscan_status_=-1; //!< Actual status code, use getStatusString() to print it in human-readable form.
+    VSCAN_HANDLE vscan_handle_=-1; // Addres of serial port, or actual status code.
+    VSCAN_STATUS vscan_status_=-1; // Actual status code, use getStatusString() to print it in human-readable form.
 
-    DWORD vscan_flags_ = 0; //!< Flags for coding errors and warnings given by USB-CAN adapter.
+    DWORD vscan_flags_ = 0; // Flags for coding errors and warnings given by USB-CAN adapter.
 
-    CHAR error_string_[33]; //!< Error string with fixed size.
+    CHAR error_string_[33]; // Error string with fixed size.
 
-    DWORD actual_read_frame_number_ = 0; //!< Actual number of read CAN-fames.
-    DWORD actual_write_frame_number_ = 0; //!< Actual number of written CAN-fames.
+    DWORD actual_read_frame_number_ = 0; // Actual number of read CAN-fames.
+    DWORD actual_write_frame_number_ = 0; // Actual number of written CAN-fames.
 
 }; //class
 

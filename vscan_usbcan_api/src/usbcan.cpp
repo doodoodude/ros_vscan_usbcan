@@ -4,13 +4,12 @@
 namespace vscan_api
 {
 
-//*! An usbcan_handle object constructor. 
+// An usbcan_handle object constructor. 
 usbcan_handle::usbcan_handle()
 {
-
 }
 
-//*! An usbcan_handle object destructor. 
+// An usbcan_handle object destructor. 
 usbcan_handle::~usbcan_handle()
 {
     // need to check if device is ready, to close it???
@@ -20,8 +19,9 @@ usbcan_handle::~usbcan_handle()
     // }
 }
 
-//*! Creating socket for USB-CAN adapter connection and open CAN-channel.
+
 /*!
+ Creating socket for USB-CAN adapter connection and open CAN-channel.
     \param device The name of device, which the USB-CAN adapter is plugged to (e.g. "/dev/ttyUSB0").
     \param mode USB-CAN functioning mode (e.g. listen-only).
     \param speed CAN baudrate.
@@ -47,15 +47,15 @@ bool usbcan_handle::open(CHAR * device, DWORD mode, void * speed)
     }
 }
 
-//! Closing CAN-channel.
+// Closing CAN-channel.
 void usbcan_handle::close()
 {
     ROS_INFO("[USB-CAN adapter] Shutting down connection...");
     vscan_status_ = VSCAN_Close(vscan_handle_);
 } 
 
-//! Getting status of USB-CAN adapter and CAN-channel in human-readable form.
 /*!
+Getting status of USB-CAN adapter and CAN-channel in human-readable form.
     \return An error_string_ for terminal printing.
 */
 char * usbcan_handle::getStatusString()
@@ -64,9 +64,10 @@ char * usbcan_handle::getStatusString()
     return error_string_;
 }
 
-//! Taking atempt to read CAN-frames from USB-CAN buffer.
-//! Modifies given read CAN-frames container object, if there is new frames arrived and stored in USB-CAN buffer.
+
 /*!
+Taking atempt to read CAN-frames from USB-CAN buffer.
+Modifies given read CAN-frames container object, if there is new frames arrived and stored in USB-CAN buffer.
     \param read_buffer Pointer to CAN-frames container object (e.g. std::vector<VSCAN_MSG>).
     \param read_buffer_size Size of buffer.
     \return The no-error-status boolean (true if no error).
@@ -77,9 +78,10 @@ bool  usbcan_handle::readRequest(VSCAN_MSG * read_buffer, DWORD read_buffer_size
     return noError();
 }
 
-//! Taking atempt to write CAN-frames.
+
 /*!
-    \param write_buffer Pointer to CAN-frames container object (e.g. std::vector<VSCAN_MSG>).
+Taking atempt to write CAN-frames.
+    \param write_buffer Pointer to CAN-frames container object (e.g. std::vector<VSCAN_MSG>) or pointer to VSCAN_MSG structer itself.
     \param write_buffer_size Size of buffer (number of frames) to write.
     \return The no-error-status boolean (true if no error).
 */
@@ -89,8 +91,9 @@ bool  usbcan_handle::writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_s
     return noError();
 }
 
-//! Taking atempt to send out all frames to CAN immediately.
+
 /*!
+Taking atempt to send out all frames to CAN immediately.
     \return The no-error-status boolean (true if no error).
 */
 bool  usbcan_handle::Flush()
@@ -99,8 +102,9 @@ bool  usbcan_handle::Flush()
     return noError();
 }
 
-//! Setting CAN baudrate.
+
 /*!
+Setting CAN baudrate.
     \return The no-error-status boolean (true if no error).
 */
 bool usbcan_handle::setSpeed(void * speed)
@@ -124,8 +128,9 @@ bool usbcan_handle::setSpeed(void * speed)
     }
 }
 
-//! Printing info about error and warning flags in terminal.
+
 /*!
+Printing info about error and warning flags in terminal.
     \return The no-error-status for this operation (true if no errors and warnings).
 */
 bool usbcan_handle::getErrorFlag()
@@ -185,14 +190,17 @@ bool usbcan_handle::getErrorFlag()
     return true;
 }
 
-//! Getter for actual number of written frames.
+
+// Getter for actual number of written frames.
 unsigned long usbcan_handle::getActualWriteNum(){ return actual_write_frame_number_;}
 
-//! Getter for actual number of frames, read from CAN-channel.
+
+// Getter for actual number of frames, read from CAN-channel.
 unsigned long usbcan_handle::getActualReadNum(){ return actual_read_frame_number_;}
 
-//! Checking no-error-status.
+
 /*!
+Checking no-error-status.
     \return True if no errors, and false if there are some errors with USB-CAN adapter or CAN-channel.
 */
 bool usbcan_handle::noError()
@@ -206,8 +214,9 @@ bool usbcan_handle::noError()
     }
 }
 
-//! Inserting given number (int16 or float) in data field of given CAN-frame. 
+
 /*!
+Inserting given number (int16 or float) in data field of given CAN-frame. 
     \param msg Pointer to VSCAN_MSG structure.
     \param val A number to pack into data field of CAN-frame
     \param byte_offset A byte offset of given number in data field of given CAN-frame (0-7 bytes).
@@ -228,8 +237,9 @@ void usbcan_handle::wrapMsgData(VSCAN_MSG &msg, float val, size_t byte_offset)
     
 }
 
-//! Getting number (int16) from data field of given CAN-frame. 
+
 /*!
+Getting number (int16) from data field of given CAN-frame. 
     \param msg Pointer to VSCAN_MSG structure.
     \param byte_offset A byte offset of number in data field of given CAN-frame (0-7 bytes).
 */
@@ -238,8 +248,9 @@ int16_t usbcan_handle::getDatafromMsg(VSCAN_MSG &msg, size_t byte_offset)
     return msg.Data[byte_offset]<<8 | msg.Data[byte_offset+1];
 }
 
-//! Getting number (float) from data field of given CAN-frame. 
+
 /*!
+Getting number (float) from data field of given CAN-frame. 
     \param msg Pointer to VSCAN_MSG structure.
     \param byte_offset A byte offset of number in data field of given CAN-frame (0-4 bytes).
 */
