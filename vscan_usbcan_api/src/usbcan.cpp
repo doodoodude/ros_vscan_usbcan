@@ -210,6 +210,7 @@ bool usbcan_handle::noError()
     {
         return true;
     }else{
+        getErrorFlag();
         ROS_ERROR("[USB-CAN adapter] Error: %s",getStatusString());
         return false;
     }
