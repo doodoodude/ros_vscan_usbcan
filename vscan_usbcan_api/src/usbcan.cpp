@@ -22,6 +22,7 @@ usbcan_handle::~usbcan_handle()
 
 /*!
  Creating socket for USB-CAN adapter connection and open CAN-channel.
+ Use "sudo chmod 777 /dev/ttyUSB0" in terminal, if couldn't connect to USB-CAN adapter.
     \param device The name of device, which the USB-CAN adapter is plugged to (e.g. "/dev/ttyUSB0").
     \param mode USB-CAN functioning mode (e.g. listen-only).
     \param speed CAN baudrate.
