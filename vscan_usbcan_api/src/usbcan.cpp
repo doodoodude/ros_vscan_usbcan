@@ -89,8 +89,7 @@ Taking atempt to write CAN-frames.
 bool  usbcan_handle::writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size)
 {
     vscan_status_ = VSCAN_Write(vscan_handle_, write_buffer, write_buffer_size, &actual_write_frame_number_);
-    Flush();
-    return noError();
+    return Flush();
 }
 
 
