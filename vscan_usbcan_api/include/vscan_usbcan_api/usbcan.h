@@ -60,15 +60,15 @@ private:
     // DWORD write_buffer_size_;
     // DWORD read_buffer_size_;
 
-    VSCAN_HANDLE vscan_handle_=-1; // Addres of serial port, or actual status code.
-    VSCAN_STATUS vscan_status_=-1; // Actual status code, use getStatusString() to print it in human-readable form.
+    VSCAN_HANDLE vscan_handle_; // Addres of serial port, or actual status code.
+    VSCAN_STATUS vscan_status_; // Actual status code, use getStatusString() to print it in human-readable form.
 
-    DWORD vscan_flags_ = 0; // Flags for coding errors and warnings given by USB-CAN adapter.
+    DWORD vscan_flags_; // Flags for coding errors and warnings given by USB-CAN adapter.
 
-    CHAR error_string_[33]; // Error string with fixed size.
+    CHAR * error_string_; // Error string with fixed size.
 
-    DWORD actual_read_frame_number_ = 0; // Actual number of read CAN-fames.
-    DWORD actual_write_frame_number_ = 0; // Actual number of written CAN-fames.
+    DWORD actual_read_frame_number_; // Actual number of read CAN-fames.
+    DWORD actual_write_frame_number_; // Actual number of written CAN-fames.
 
 }; //class
 
