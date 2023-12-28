@@ -7,11 +7,6 @@ namespace vscan_api
 {
 
 //! Class for holding all functions, structures and variables for establishing connection with USB-CAN adapter and working with CAN-channel. 
-/*!Example of usage.
-
-
-
-*/
 class usbcan_handle
 {
 
