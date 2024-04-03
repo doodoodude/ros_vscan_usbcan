@@ -33,7 +33,7 @@ public:
 
     unsigned long getActualReadNum();
 
-    bool noError();
+    bool noError(bool show_error_str);
 
     void wrapMsgData(VSCAN_MSG &msg, int16_t val, size_t byte_offset = 0);
     void wrapMsgData(VSCAN_MSG &msg, float val, size_t byte_offset = 0);

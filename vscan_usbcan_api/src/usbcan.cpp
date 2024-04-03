@@ -206,13 +206,13 @@ unsigned long usbcan_handle::getActualReadNum(){ return actual_read_frame_number
 Checking no-error-status.
     \return True if no errors, and false if there are some errors with USB-CAN adapter or CAN-channel.
 */
-bool usbcan_handle::noError()
-{ 
+bool usbcan_handle::noError(bool show_error_str = true)
+{
+    if(show_error_str){getErrorFlag();}
     if(vscan_status_ == VSCAN_ERR_OK)
     {
         return true;
     }else{
-        getErrorFlag();
         ROS_ERROR("[USB-CAN adapter] Error: %s",getStatusString());
         return false;
     }
