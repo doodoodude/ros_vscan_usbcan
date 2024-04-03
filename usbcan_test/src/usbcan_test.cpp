@@ -152,24 +152,22 @@ int main(int argc, char **argv)
         {
         
         // read request
-            if(usbcan_handle.readRequest(test_read_buffer.data(),test_read_buffer.size()))
-            {
+            usbcan_handle.readRequest(test_read_buffer.data(),test_read_buffer.size());
             
             // if read request SUCCEEDS --> frames, read from CAN, are stored in read buffer
-                if(usbcan_handle.getActualReadNum()>0)
+            if(usbcan_handle.getActualReadNum()>0)
+            {
+                // ROS_INFO_STREAM("Read " << usbcan_handle.getActualReadNum() << " CAN-frames.");
+                for(VSCAN_MSG read_msg : test_read_buffer) // iterating over read buffer
                 {
-                    // ROS_INFO_STREAM("Read " << usbcan_handle.getActualReadNum() << " CAN-frames.");
-                    for(VSCAN_MSG read_msg : test_read_buffer) // iterating over read buffer
+                    // ROS_INFO("Got CAN-frame with ID: %03x, Data: %02x %02x %02x %02x %02x %02x %02x %02x", read_msg.Id, read_msg.Data[0], read_msg.Data[1], read_msg.Data[2], read_msg.Data[3], read_msg.Data[4], read_msg.Data[5], read_msg.Data[6], read_msg.Data[7]);
+                    if(read_msg.Id==some_read_id)
                     {
-                        // ROS_INFO("Got CAN-frame with ID: %03x, Data: %02x %02x %02x %02x %02x %02x %02x %02x", read_msg.Id, read_msg.Data[0], read_msg.Data[1], read_msg.Data[2], read_msg.Data[3], read_msg.Data[4], read_msg.Data[5], read_msg.Data[6], read_msg.Data[7]);
-                        if(read_msg.Id==some_read_id)
-                        {
-                            got_some_uint8_number = read_msg.Data[0];
-                            got_some_int16_number = usbcan_handle.getDatafromMsg(read_msg,1);
-                            got_some_float_number = usbcan_handle.getFloatDatafromMsg(read_msg,3);
+                        got_some_uint8_number = read_msg.Data[0];
+                        got_some_int16_number = usbcan_handle.getDatafromMsg(read_msg,1);
+                        got_some_float_number = usbcan_handle.getFloatDatafromMsg(read_msg,3);
 
-                            // test_publisher.publish(got_some_int16_number);
-                        }
+                        // test_publisher.publish(got_some_int16_number);
                     }
                 }
             }
