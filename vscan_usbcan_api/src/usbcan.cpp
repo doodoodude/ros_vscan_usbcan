@@ -43,10 +43,12 @@ bool usbcan_handle::open(CHAR * device, DWORD mode, void * speed)
         else if(mode==VSCAN_MODE_SELF_RECEPTION){ROS_INFO("[USB-CAN adapter] Mode: self-reception");}
 
         setSpeed(speed);
-        return true;
+        
+        return noError(true);
+
     }else{
         ROS_ERROR("[USB-CAN adapter] Failed to connect.");
-        return false;
+        return noError(true);
     }
 }
 
@@ -73,12 +75,10 @@ Taking atempt to read CAN-frames from USB-CAN buffer.
 Modifies given read CAN-frames container object, if there is new frames arrived and stored in USB-CAN buffer.
     \param read_buffer Pointer to CAN-frames container object (e.g. std::vector<VSCAN_MSG>).
     \param read_buffer_size Size of buffer.
-    \return The no-error-status boolean (true if no error).
 */
-bool  usbcan_handle::readRequest(VSCAN_MSG * read_buffer, DWORD read_buffer_size)
+void  usbcan_handle::readRequest(VSCAN_MSG * read_buffer, DWORD read_buffer_size)
 {
     vscan_status_ = VSCAN_Read(vscan_handle_, read_buffer, read_buffer_size, &actual_read_frame_number_);
-    return noError();
 }
 
 
@@ -86,34 +86,30 @@ bool  usbcan_handle::readRequest(VSCAN_MSG * read_buffer, DWORD read_buffer_size
 Taking atempt to write CAN-frames.
     \param write_buffer Pointer to CAN-frames container object (e.g. std::vector<VSCAN_MSG>) or pointer to VSCAN_MSG structer itself.
     \param write_buffer_size Size of buffer (number of frames) to write.
-    \return The no-error-status boolean (true if no error).
 */
-bool  usbcan_handle::writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size)
+void  usbcan_handle::writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size)
 {
     vscan_status_ = VSCAN_Write(vscan_handle_, write_buffer, write_buffer_size, &actual_write_frame_number_);
-    return Flush();
+    Flush();
 }
 
 
 /*!
 Taking atempt to send out all frames to CAN immediately.
-    \return The no-error-status boolean (true if no error).
 */
-bool  usbcan_handle::Flush()
+void  usbcan_handle::Flush()
 {
     vscan_status_ = VSCAN_Flush(vscan_handle_);
-    return noError();
 }
 
 
 /*!
 Setting CAN baudrate.
-    \return The no-error-status boolean (true if no error).
 */
-bool usbcan_handle::setSpeed(void * speed)
+void usbcan_handle::setSpeed(void * speed)
 {
     vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_SPEED, speed);
-    if(noError())
+    if(noError(false))
     {
         int speed_val = 0;
         if(speed==VSCAN_SPEED_100K){speed_val = 100000;}
@@ -125,9 +121,6 @@ bool usbcan_handle::setSpeed(void * speed)
         else if(speed==VSCAN_SPEED_50K){speed_val = 50000;}
         else if(speed==VSCAN_SPEED_800K){speed_val = 800000;}
         ROS_INFO("[USB-CAN adapter] CAN baudrate set: %i",speed_val);
-        return true;
-    }else{
-        return false;
     }
 }
 

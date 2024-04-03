@@ -19,15 +19,15 @@ public:
 
     void close();
 
-    bool setSpeed(void * speed); 
+    void setSpeed(void * speed); 
 
     bool getErrorFlag();
 
     char * getStatusString();
     
-    bool readRequest(VSCAN_MSG * read_buffer, DWORD read_buffer_size);
-    bool writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size);
-    bool Flush();
+    void readRequest(VSCAN_MSG * read_buffer, DWORD read_buffer_size);
+    void writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size);
+    void Flush();
 
     unsigned long getActualWriteNum();
 

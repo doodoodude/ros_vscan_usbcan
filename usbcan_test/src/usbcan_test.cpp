@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     {
     
     // check if no error with CAN-channel
-        if(usbcan_handle.noError())
+        if(usbcan_handle.noError(true))
         {
         
         // read request
