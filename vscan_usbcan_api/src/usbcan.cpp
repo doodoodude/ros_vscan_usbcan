@@ -5,20 +5,20 @@ namespace vscan_api
 {
 
 // An usbcan_handle object constructor. 
-usbcan_handle::usbcan_handle() :
-actual_read_frame_number_(0), actual_write_frame_number_(0),
-vscan_handle_(-1), vscan_status_(-1), vscan_flags_(0),
-error_string_(new CHAR[33])
-{}
+usbcan_handle::usbcan_handle() 
+{
+    actual_write_frame_number_ = 0;
+    actual_read_frame_number_ = 0;
+    vscan_handle_ = -1;
+    vscan_status_ = -1;
+    vscan_flags_ = 0;
+    error_string_ = new CHAR[33];
+}
 
 // An usbcan_handle object destructor. 
 usbcan_handle::~usbcan_handle()
 {
-    // need to check if device is ready, to close it???
-    // if(isReady()) 
-    // {
-        
-    // }
+    delete error_string_;
 }
 
 
