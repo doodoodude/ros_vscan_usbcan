@@ -17,9 +17,7 @@ usbcan_handle::usbcan_handle()
 
 // An usbcan_handle object destructor. 
 usbcan_handle::~usbcan_handle()
-{
-    delete error_string_;
-}
+{}
 
 
 /*!
