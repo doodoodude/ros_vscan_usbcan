@@ -41,6 +41,10 @@ bool usbcan_handle::open(CHAR * device, DWORD mode, void * speed)
         else if(mode==VSCAN_MODE_SELF_RECEPTION){ROS_INFO("[USB-CAN adapter] Mode: self-reception");}
 
         setSpeed(speed);
+
+        vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_DEBUG, (void*)VSCAN_DEBUG_LOW);
+        vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_DEBUG_MODE, VSCAN_DEBUG_MODE_CONSOLE);
+        vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_TIMESTAMP, VSCAN_TIMESTAMP_ON);
         
         return noError(true);
 
@@ -63,7 +67,7 @@ Getting status of USB-CAN adapter and CAN-channel in human-readable form.
 */
 char * usbcan_handle::getStatusString()
 {
-    VSCAN_GetErrorString(vscan_status_, error_string_, sizeof(error_string_));
+    VSCAN_GetErrorString(vscan_status_, error_string_, sizeof(error_string_)-1);
     return error_string_;
 }
 
@@ -88,7 +92,7 @@ Taking atempt to write CAN-frames.
 void  usbcan_handle::writeRequest(VSCAN_MSG * write_buffer, DWORD write_buffer_size)
 {
     vscan_status_ = VSCAN_Write(vscan_handle_, write_buffer, write_buffer_size, &actual_write_frame_number_);
-    Flush();
+    vscan_status_ = VSCAN_Flush(vscan_handle_);
 }
 
 
