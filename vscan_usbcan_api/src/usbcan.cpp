@@ -42,7 +42,7 @@ bool usbcan_handle::open(CHAR * device, DWORD mode, void * speed)
 
         setSpeed(speed);
 
-        vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_DEBUG, (void*)VSCAN_DEBUG_LOW);
+        vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_DEBUG, (void*)VSCAN_DEBUG_NONE);
         vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_DEBUG_MODE, VSCAN_DEBUG_MODE_CONSOLE);
         vscan_status_ = VSCAN_Ioctl(vscan_handle_, VSCAN_IOCTL_SET_TIMESTAMP, VSCAN_TIMESTAMP_ON);
         
@@ -201,13 +201,13 @@ unsigned long usbcan_handle::getActualReadNum(){ return actual_read_frame_number
 Checking no-error-status.
     \return True if no errors, and false if there are some errors with USB-CAN adapter or CAN-channel.
 */
-bool usbcan_handle::noError(bool show_error_str = true)
+bool usbcan_handle::noError(bool show_error_str)
 {
-    if(show_error_str){getErrorFlag();}
     if(vscan_status_ == VSCAN_ERR_OK)
     {
         return true;
     }else{
+        if(show_error_str){ getErrorFlag();}
         ROS_ERROR("[USB-CAN adapter] Error: %s",getStatusString());
         return false;
     }
